@@ -6,23 +6,23 @@ import kotlin.math.abs
 const val path_to_input_a = "advent-of-code/input/day_01_a.txt"
 const val path_to_input_b = "advent-of-code/input/day_01_b.txt"
 fun partA(){
-    val lists = File(path_to_input_a)
+    val (listA, listB) = readFileAndSplitIntoLists(path_to_input_a)
+    listA.sorted()
+        .zip(listB.sorted())
+        .sumOf { (a,b) -> abs(a-b) }
+        .also{ println(it) }
+}
+
+fun readFileAndSplitIntoLists(path: String): Pair<List<Int>,List<Int>>{
+    return File(path)
         .readLines()
         .map { line: String -> val split =  line.split(" ")
             split.first().toInt() to split.last().toInt()}
-    val (listA, listB) = lists.unzip()
-    println(listA.sorted()
-        .zip(listB.sorted())
-        .sumOf { (a,b) -> abs(a-b) }
-    )
+        .unzip()
 }
 
 fun partB(){
-    val lists = File(path_to_input_b)
-        .readLines()
-        .map { line: String -> val split =  line.split(" ")
-            split.first().toInt() to split.last().toInt()}
-    val (listValues, listB ) = lists.unzip()
+    val (listValues, listB) = readFileAndSplitIntoLists(path_to_input_b)
     val mapOccurrences: Map<Int,Int> = listB
         .groupingBy { it }
         .eachCount()
