@@ -3,9 +3,9 @@ package src
 import java.io.File
 import kotlin.math.abs
 
-const val path_to_input_a = "advent-of-code/input/day_01_a.txt"
-const val path_to_input_b = "advent-of-code/input/day_01_b.txt"
-fun partA(){
+private const val path_to_input_a = "advent-of-code/input/day_01_a.txt"
+private const val path_to_input_b = "advent-of-code/input/day_01_b.txt"
+private fun partA(){
     val (listA, listB) = readFileAndSplitIntoLists(path_to_input_a)
     listA.sorted()
         .zip(listB.sorted())
@@ -13,7 +13,7 @@ fun partA(){
         .also{ println(it) }
 }
 
-fun readFileAndSplitIntoLists(path: String): Pair<List<Int>,List<Int>>{
+private fun readFileAndSplitIntoLists(path: String): Pair<List<Int>,List<Int>>{
     return File(path)
         .readLines()
         .map { line: String -> val split =  line.split(" ")
@@ -21,7 +21,7 @@ fun readFileAndSplitIntoLists(path: String): Pair<List<Int>,List<Int>>{
         .unzip()
 }
 
-fun partB(){
+private fun partB(){
     val (listValues, listB) = readFileAndSplitIntoLists(path_to_input_b)
     val mapOccurrences: Map<Int,Int> = listB
         .groupingBy { it }
