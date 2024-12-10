@@ -2,7 +2,7 @@ package src
 
 import java.io.File
 
-private const val path_to_input_a = "advent-of-code/input/day_02_a.txt"
+private const val path_to_input_a = "advent-of-code/input/day_02.txt"
 
 private fun readFileAndProduceNestedListsOfInts(path: String): List<List<Int>>{
     return File(path)

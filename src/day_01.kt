@@ -3,7 +3,7 @@ package src
 import java.io.File
 import kotlin.math.abs
 
-private const val path_to_input_a = "advent-of-code/input/day_01_a.txt"
+private const val path_to_input_a = "advent-of-code/input/day_01.txt"
 private fun partA(){
     val (listA, listB) = readFileAndSplitIntoLists()
     listA.sorted()

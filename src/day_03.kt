@@ -4,7 +4,7 @@ import java.io.File
 
 //so i hear you like regex
 
-private const val path_to_input_a = "advent-of-code/input/day_03_a.txt"
+private const val path_to_input_a = "advent-of-code/input/day_03.txt"
 
 private const val test_input = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
 
