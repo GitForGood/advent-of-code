@@ -15,23 +15,6 @@ private val inputRegex = File(path)
                     .toList()
     }
 
-private val testInput = listOf("190: 10 19",
-        "3267: 81 40 27",
-        "83: 17 5",
-        "156: 15 6",
-        "7290: 6 8 6 15",
-        "161011: 16 10 13",
-        "192: 17 8 14",
-        "21037: 9 7 18 13",
-        "292: 11 6 16 20")
-    .map { """(\d+)""".toRegex().findAll(it) }
-    .map {
-        it.first().value.toBigInteger() to
-                it.drop(1).map { it.value.toBigInteger() }
-                    .toList()
-    }
-
-
 private fun partA(){
     inputRegex
         .map { (total, operands) ->
@@ -39,12 +22,6 @@ private fun partA(){
         }
         .filter {(total, tree) ->
             tree?.endsIn(total) ?: false
-        }
-        .onEach { (total, tree) ->
-            println("total: $total,")
-            tree?.allNodesThatEndsIn(total)?.forEach{
-                println("formula: ${it.formula}")
-            }
         }
         .sumOf { it.first }
         .also { println(it) }
@@ -54,12 +31,12 @@ private fun listToTree(total: BigInteger, list: List<BigInteger>, tree: Tree? = 
         return tree
     return tree?.let {
         val next: BigInteger = list.first()
-        it.left = listToTree(total, list.drop(1), Tree(it.formula + " * $next", it.value * next))
-        it.right = listToTree(total, list.drop(1), Tree(it.formula + " + $next", it.value + next))
+        it.left = listToTree(total, list.drop(1), Tree(it.value * next))
+        it.right = listToTree(total, list.drop(1), Tree(it.value + next))
         return@let it
-    } ?: listToTree(total, list.drop(1), Tree(list.first().toString(), list.first()))
+    } ?: listToTree(total, list.drop(1), Tree(list.first()))
 }
-private class Tree(val formula: String, val value: BigInteger, var left: Tree? = null, var right: Tree? = null){
+private class Tree(val value: BigInteger, var left: Tree? = null, var right: Tree? = null){
     fun endsIn(i: BigInteger): Boolean{
         if (left == null && right == null)
             return i == value
@@ -74,6 +51,33 @@ private class Tree(val formula: String, val value: BigInteger, var left: Tree? =
         return acc.toList()
     }
 }
+private fun partB(){
+    inputRegex.map {(target, operands) ->
+        target to start(target, operands)
+    }.filter { (target, lbi) ->
+        lbi.any { it.first == target }
+    }.sumOf { it.first }
+        .also { println(it) }
+}
+// total, remaining operands
+typealias LBI = Pair<BigInteger, List<BigInteger>>
+private fun start(target: BigInteger, operands: List<BigInteger>): List<LBI>{
+    val head = operands.first()
+    val list = operands.drop(1)
+    return iterator(target, head to list)
+}
+private fun iterator(target: BigInteger, step: LBI): List<LBI>{
+    if (step.first > target)
+        return emptyList()
+    if (step.second.isEmpty())
+        return listOf(step)
+    val addStep = step.first + step.second.first() to step.second.drop(1)
+    val mulStep = step.first * step.second.first() to step.second.drop(1)
+    val conStep = (step.first.toString() + step.second.first().toString()).toBigInteger() to step.second.drop(1)
+    return listOf(iterator(target, addStep), iterator(target, mulStep), iterator(target, conStep)).flatten()
+}
+
 fun main(){
-    partA()
+    //partA()
+    partB()
 }
